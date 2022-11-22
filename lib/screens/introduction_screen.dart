@@ -3,15 +3,52 @@ import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/resources/app_styles.dart';
 import 'package:wstore/wstore.dart';
 
+enum IntroductionPages {
+  welcome(
+    title: 'Welcome to Monumental habits',
+    asset: 'assets/images/Illustration1.png',
+  ),
+  create(
+    title: 'Create new habit easily',
+    asset: 'assets/images/Illustration2.png',
+  ),
+  progress(
+    title: 'Keep track of your progress',
+    asset: 'assets/images/Illustration3.png',
+  ),
+  community(
+    title: 'Join a supportive community',
+    asset: 'assets/images/Illustration4.png',
+  );
+
+  const IntroductionPages({
+    required this.title,
+    required this.asset,
+  });
+
+  final String title;
+  final String asset;
+}
+
 class IntroductionScreenStore extends WStore {
-  static const pagesCount = 4;
+  PageController controller = PageController();
   int currentPage = 0;
+
+  void setCurrentPage(int index) {
+    setStore(() => currentPage = index);
+  }
 
   @override
   IntroductionScreen get widget => super.widget as IntroductionScreen;
 
   static IntroductionScreenStore of(BuildContext context) {
     return WStoreWidget.store<IntroductionScreenStore>(context);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
 
@@ -42,47 +79,48 @@ class IntroductionScreenContent extends StatelessWidget {
       children: [
         Expanded(
           child: PageView(
-            onPageChanged: (index) =>
-                store.setStore(() => store.currentPage = index),
-            children: const [
-              IndroductionPage(
-                title: 'Welcome to Monumental habits',
-                asset: 'assets/images/Illustration1.png',
-              ),
-              IndroductionPage(
-                title: 'Create new habit easily',
-                asset: 'assets/images/Illustration2.png',
-              ),
-              IndroductionPage(
-                title: 'Keep track of your progress',
-                asset: 'assets/images/Illustration3.png',
-              ),
-              IndroductionPage(
-                title: 'Join a supportive community',
-                asset: 'assets/images/Illustration4.png',
-              ),
-            ],
+            controller: store.controller,
+            onPageChanged: (index) => store.setCurrentPage(index),
+            children: IntroductionPages.values
+                .map(
+                  (page) => IntroductionPage(
+                    title: page.title,
+                    asset: page.asset,
+                  ),
+                )
+                .toList(),
           ),
         ),
         const SizedBox(height: 60),
         Row(
           children: [
             const SizedBox(width: 24),
-            const IndicatorButton(text: 'Skip'),
+            IndicatorButton(
+              text: 'Skip',
+              onPressed: () => Navigator.maybePop(context),
+            ),
             Expanded(
               child: Center(
                 child: WStoreValueBuilder<IntroductionScreenStore, int>(
                   watch: (store) => store.currentPage,
                   builder: (context, page) {
                     return IndicatorDots(
-                      count: IntroductionScreenStore.pagesCount,
+                      count: IntroductionPages.values.length,
                       current: page,
                     );
                   },
                 ),
               ),
             ),
-            const IndicatorButton(text: 'Next'),
+            IndicatorButton(
+              text: 'Next',
+              onPressed: () {
+                store.controller.nextPage(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeIn,
+                );
+              },
+            ),
             const SizedBox(width: 24),
           ],
         ),
@@ -123,21 +161,25 @@ class IndicatorDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double height = selected ? 13 : 11;
+    final double width = selected ? 13 : 11;
+    final color = selected ? AppColors.primary : AppColors.secondary;
+    final border = selected
+        ? Border.all(
+            color: AppColors.primary.withOpacity(0.2),
+            width: 2,
+            strokeAlign: StrokeAlign.outside,
+          )
+        : null;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
       margin: const EdgeInsets.symmetric(horizontal: 4),
-      height: selected ? 13 : 11,
-      width: selected ? 13 : 11,
+      height: height,
+      width: width,
       decoration: BoxDecoration(
-        color: selected ? AppColors.primary : AppColors.secondary,
-        border: selected
-            ? Border.all(
-                color: AppColors.primary.withOpacity(0.2),
-                width: 2,
-                strokeAlign: StrokeAlign.outside,
-              )
-            : null,
-        borderRadius: BorderRadius.circular(20),
+        color: color,
+        border: border,
+        shape: BoxShape.circle,
       ),
     );
   }
@@ -145,16 +187,18 @@ class IndicatorDot extends StatelessWidget {
 
 class IndicatorButton extends StatelessWidget {
   final String text;
+  final VoidCallback onPressed;
 
   const IndicatorButton({
     super.key,
     required this.text,
+    required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       style: TextButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       ),
@@ -169,11 +213,11 @@ class IndicatorButton extends StatelessWidget {
   }
 }
 
-class IndroductionPage extends StatelessWidget {
+class IntroductionPage extends StatelessWidget {
   final String title;
   final String asset;
 
-  const IndroductionPage({
+  const IntroductionPage({
     super.key,
     required this.title,
     required this.asset,
