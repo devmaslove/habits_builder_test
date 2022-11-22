@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/screens/forgot_password_screen.dart';
 import 'package:habits_builder_test/screens/introduction_screen.dart';
 
@@ -14,6 +15,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        scaffoldBackgroundColor: AppColors.bg,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: AppColors.bg,
+          foregroundColor: AppColors.primary,
+          elevation: 0,
+        ),
         fontFamily: 'Manrope',
         primarySwatch: Colors.blue,
       ),

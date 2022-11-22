@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:habits_builder_test/resources/app_colors.dart';
+import 'package:habits_builder_test/resources/app_styles.dart';
 import 'package:wstore/wstore.dart';
 
 class IntroductionScreenStore extends WStore {
@@ -187,12 +188,7 @@ class IndroductionPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Text(
             title.toUpperCase(),
-            style: const TextStyle(
-              fontFamily: 'Klasik',
-              color: AppColors.primary,
-              fontSize: 32,
-              height: 1,
-            ),
+            style: AppStyles.title.copyWith(fontSize: 32),
             textAlign: TextAlign.center,
           ),
         ),
