@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:wstore/wstore.dart';
 
 class IntroductionScreenStore extends WStore {
@@ -127,10 +128,10 @@ class IndicatorDot extends StatelessWidget {
       height: selected ? 13 : 11,
       width: selected ? 13 : 11,
       decoration: BoxDecoration(
-        color: selected ? const Color(0xFF573353) : const Color(0xFFF9B566),
+        color: selected ? AppColors.primary : AppColors.secondary,
         border: selected
             ? Border.all(
-                color: const Color(0xFF573353).withOpacity(0.2),
+                color: AppColors.primary.withOpacity(0.2),
                 width: 2,
                 strokeAlign: StrokeAlign.outside,
               )
@@ -159,7 +160,7 @@ class IndicatorButton extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(
-          color: Color(0xFF573353),
+          color: AppColors.primary,
           fontSize: 17,
         ),
       ),
@@ -188,7 +189,7 @@ class IndroductionPage extends StatelessWidget {
             title.toUpperCase(),
             style: const TextStyle(
               fontFamily: 'Klasik',
-              color: Color(0xFF573353),
+              color: AppColors.primary,
               fontSize: 32,
               height: 1,
             ),
@@ -212,7 +213,7 @@ class IndroductionPage extends StatelessWidget {
                 TextSpan(
                   text: 'help you '.toUpperCase(),
                   style: const TextStyle(
-                    color: Color(0xFFFC9D45),
+                    color: AppColors.secondary2,
                   ),
                 ),
                 TextSpan(
@@ -221,13 +222,13 @@ class IndroductionPage extends StatelessWidget {
                 TextSpan(
                   text: 'yourself.'.toUpperCase(),
                   style: const TextStyle(
-                    color: Color(0xFFFC9D45),
+                    color: AppColors.secondary2,
                   ),
                 ),
               ],
             ),
             style: const TextStyle(
-              color: Color(0xFF573353),
+              color: AppColors.primary,
               fontSize: 17,
               height: 1.41,
               fontWeight: FontWeight.w700,
