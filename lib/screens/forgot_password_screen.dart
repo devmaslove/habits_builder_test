@@ -4,8 +4,6 @@ import 'package:habits_builder_test/resources/app_styles.dart';
 import 'package:wstore/wstore.dart';
 
 class ForgotPasswordScreenStore extends WStore {
-  // TODO: add data here...
-
   @override
   ForgotPasswordScreen get widget => super.widget as ForgotPasswordScreen;
 
@@ -46,7 +44,6 @@ class ForgotPasswordScreen extends WStoreWidget<ForgotPasswordScreenStore> {
                   ),
                 ),
               ),
-              // Your widgets here
             ],
           ),
         ),
