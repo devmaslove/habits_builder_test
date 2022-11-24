@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/resources/app_styles.dart';
+import 'package:habits_builder_test/widgets/primary_button.dart';
 import 'package:wstore/wstore.dart';
 
 class ForgotPasswordScreenStore extends WStore {
@@ -177,25 +178,7 @@ class EnterEmailForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.secondary2,
-              elevation: 0,
-              minimumSize: const Size(double.infinity, 60),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text(
-              'Send Reset Link',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: AppColors.primary,
-              ),
-            ),
-          ),
+          PrimaryButton(text: 'Send Reset Link', onPressed: () {}),
         ],
       ),
     );
