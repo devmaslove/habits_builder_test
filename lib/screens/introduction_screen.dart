@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/resources/app_styles.dart';
+import 'package:habits_builder_test/widgets/primary_button.dart';
 import 'package:wstore/wstore.dart';
 
 enum IntroductionPages {
@@ -77,6 +78,7 @@ class IntroductionScreenContent extends StatelessWidget {
     final store = IntroductionScreenStore.of(context);
     return Column(
       children: [
+        const SizedBox(height: 80),
         Expanded(
           child: PageView(
             controller: store.controller,
@@ -91,40 +93,72 @@ class IntroductionScreenContent extends StatelessWidget {
                 .toList(),
           ),
         ),
-        const SizedBox(height: 60),
-        Row(
-          children: [
-            const SizedBox(width: 24),
-            IndicatorButton(
-              text: 'Skip',
-              onPressed: () => Navigator.maybePop(context),
-            ),
-            Expanded(
-              child: Center(
-                child: WStoreValueBuilder<IntroductionScreenStore, int>(
-                  watch: (store) => store.currentPage,
-                  builder: (context, page) {
-                    return IndicatorDots(
-                      count: IntroductionPages.values.length,
-                      current: page,
+        const SizedBox(height: 48),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: WStoreValueBuilder<IntroductionScreenStore, int>(
+            watch: (store) => store.currentPage,
+            builder: (context, currentPage) {
+              if (currentPage == IntroductionPages.values.length - 1) {
+                return PrimaryButton(
+                  text: 'Get Started',
+                  onPressed: () => Navigator.maybePop(context),
+                );
+              }
+              return SizedBox(
+                height: 60,
+                child: DotsPanel(
+                  onSkip: () => Navigator.maybePop(context),
+                  onNext: () {
+                    store.controller.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
                     );
                   },
+                  currentPage: currentPage,
                 ),
-              ),
-            ),
-            IndicatorButton(
-              text: 'Next',
-              onPressed: () {
-                store.controller.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeIn,
-                );
-              },
-            ),
-            const SizedBox(width: 24),
-          ],
+              );
+            },
+          ),
         ),
         const SizedBox(height: 80),
+      ],
+    );
+  }
+}
+
+class DotsPanel extends StatelessWidget {
+  final VoidCallback onSkip;
+  final VoidCallback onNext;
+  final int currentPage;
+
+  const DotsPanel({
+    super.key,
+    required this.onSkip,
+    required this.onNext,
+    required this.currentPage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        IndicatorButton(
+          text: 'Skip',
+          onPressed: onSkip,
+        ),
+        Expanded(
+          child: Center(
+            child: IndicatorDots(
+              count: IntroductionPages.values.length,
+              current: currentPage,
+            ),
+          ),
+        ),
+        IndicatorButton(
+          text: 'Next',
+          onPressed: onNext,
+        ),
       ],
     );
   }
@@ -227,7 +261,6 @@ class IntroductionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 80),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Text(
