@@ -3,6 +3,7 @@ import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/screens/forgot_password_screen.dart';
 import 'package:habits_builder_test/screens/introduction_screen.dart';
 import 'package:habits_builder_test/screens/new_habit_screen.dart';
+import 'package:habits_builder_test/screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,6 +49,10 @@ class MainScreen extends StatelessWidget {
 }
 
 enum ScreenButtons {
+  splash(
+    title: 'Splash',
+    screen: SplashScreen(),
+  ),
   intro(
     title: 'Intro',
     screen: IntroductionScreen(),
