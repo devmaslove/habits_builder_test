@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/screens/forgot_password_screen.dart';
 import 'package:habits_builder_test/screens/introduction_screen.dart';
+import 'package:habits_builder_test/screens/new_habit_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,48 +36,65 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
-          child: SizedBox(
-            width: 200,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const IntroductionScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text('Intro'),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const ForgotPasswordScreen(),
-                        ),
-                      );
-                    },
-                    child: const Text('Forgot Password'),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          child: NavigateButtons(),
         ),
+      ),
+    );
+  }
+}
+
+enum ScreenButtons {
+  intro(
+    title: 'Intro',
+    screen: IntroductionScreen(),
+  ),
+  forgotPassword(
+    title: 'Forgot Password',
+    screen: ForgotPasswordScreen(),
+  ),
+  newHabit(
+    title: 'New Habit',
+    screen: NewHabitScreen(),
+  );
+
+  const ScreenButtons({
+    required this.title,
+    required this.screen,
+  });
+
+  final String title;
+  final Widget screen;
+}
+
+class NavigateButtons extends StatelessWidget {
+  const NavigateButtons({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 200,
+      child: Wrap(
+        direction: Axis.vertical,
+        spacing: 20,
+        children: ScreenButtons.values.map((button) {
+          return SizedBox(
+            width: 200,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => button.screen,
+                  ),
+                );
+              },
+              child: Text(button.title),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
