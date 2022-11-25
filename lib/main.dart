@@ -4,6 +4,7 @@ import 'package:habits_builder_test/screens/forgot_password_screen.dart';
 import 'package:habits_builder_test/screens/introduction_screen.dart';
 import 'package:habits_builder_test/screens/new_habit_screen.dart';
 import 'package:habits_builder_test/screens/splash_screen.dart';
+import 'package:habits_builder_test/screens/subscription_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -64,6 +65,10 @@ enum ScreenButtons {
   newHabit(
     title: 'New Habit',
     screen: NewHabitScreen(),
+  ),
+  subscription(
+    title: 'Subscription Page',
+    screen: SubscriptionScreen(),
   );
 
   const ScreenButtons({

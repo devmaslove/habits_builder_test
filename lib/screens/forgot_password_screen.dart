@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/resources/app_styles.dart';
+import 'package:habits_builder_test/widgets/primary_app_bar.dart';
 import 'package:habits_builder_test/widgets/primary_button.dart';
 import 'package:wstore/wstore.dart';
 
@@ -21,35 +22,12 @@ class ForgotPasswordScreen extends WStoreWidget<ForgotPasswordScreenStore> {
 
   @override
   Widget build(BuildContext context, ForgotPasswordScreenStore store) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        toolbarHeight: 84,
-        title: SizedBox(
-          height: 84,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: 22,
-                backgroundColor: AppColors.primary.withOpacity(0.1),
-                child: IconButton(
-                  onPressed: () => Navigator.maybePop(context),
-                  splashRadius: 22,
-                  padding: EdgeInsets.zero,
-                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+    return const Scaffold(
+      appBar: PrimaryAppBar(
+        title: '',
+        showBack: true,
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: ForgotPasswordScreenContent(),
       ),
     );
