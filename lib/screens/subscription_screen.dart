@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/widgets/primary_app_bar.dart';
@@ -117,7 +119,168 @@ class SubscriptionScreenContent extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: UnlockFeatures(),
         ),
+        const SizedBox(height: 28),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Expanded(
+                child: PriceBadge(
+                  price: '\$19.00',
+                  period: 'Monthly',
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: PriceBadge(
+                  title: 'Most Popular',
+                  price: '\$29.00',
+                  period: 'Yearly',
+                ),
+              ),
+              SizedBox(width: 8),
+              Expanded(
+                child: PriceBadge(
+                  price: '\$49.00',
+                  period: 'Lifetime',
+                  discount: '-75%',
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
+    );
+  }
+}
+
+class PriceBadge extends StatelessWidget {
+  final String? title;
+  final String price;
+  final String period;
+  final String? discount;
+
+  const PriceBadge({
+    super.key,
+    this.title,
+    this.discount,
+    required this.price,
+    required this.period,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      width: double.infinity,
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        children: [
+          Column(
+            children: [
+              if (title != null)
+                SizedBox(
+                  height: 32,
+                  child: ColoredBox(
+                    color: AppColors.secondary3,
+                    child: Center(
+                      child: Text(
+                        title!,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (title != null) const Divider(height: 1, color: AppColors.bg),
+              SizedBox(
+                height: 92,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        price,
+                        style: const TextStyle(
+                          color: AppColors.secondary3,
+                          fontWeight: FontWeight.w700,
+                          height: 1,
+                          fontSize: 24,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        '6-month plan for 39.99 usd',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.w500,
+                          height: 13 / 10,
+                          fontSize: 10,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const Divider(height: 1, color: AppColors.bg),
+              SizedBox(
+                height: 28,
+                child: Center(
+                  child: Text(
+                    period,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          if (discount != null)
+            Positioned(
+              width: 80,
+              height: 28,
+              bottom: 0,
+              right: -40,
+              child: Transform.rotate(
+                angle: -math.pi / 4,
+                child: const ColoredBox(
+                  color: AppColors.secondary3,
+                ),
+              ),
+            ),
+          if (discount != null)
+            Positioned(
+              bottom: 4,
+              width: 32,
+              right: -4,
+              child: Transform.rotate(
+                angle: -math.pi / 4,
+                child: Text(
+                  discount!,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primary,
+                    fontSize: 10,
+                    height: 14 / 10,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
