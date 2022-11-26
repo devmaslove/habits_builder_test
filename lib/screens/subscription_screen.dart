@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/widgets/primary_app_bar.dart';
+import 'package:habits_builder_test/widgets/primary_button.dart';
 import 'package:wstore/wstore.dart';
 
 class SubscriptionScreenStore extends WStore {
@@ -60,7 +61,10 @@ class SubscriptionScreen extends WStoreWidget<SubscriptionScreenStore> {
         showBack: true,
       ),
       body: SafeArea(
-        child: SubscriptionScreenContent(),
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: SubscriptionScreenContent(),
+        ),
       ),
     );
   }
@@ -150,6 +154,99 @@ class SubscriptionScreenContent extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(height: 48),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: PrimaryButton(
+            text: 'Subscribe Now',
+            onPressed: () => Navigator.maybePop(context),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/shield.png'),
+              const SizedBox(width: 4),
+              const Text(
+                'Secured with Goggle Play. Cancel anytime',
+                style: TextStyle(
+                  color: AppColors.primary,
+                  fontSize: 12,
+                  height: 15 / 12,
+                ),
+              )
+            ],
+          ),
+        ),
+        const SizedBox(height: 36),
+        TextButton(
+          onPressed: () {},
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          ),
+          child: const Text(
+            'Restore Purchase',
+            style: TextStyle(
+              color: AppColors.secondary3,
+              fontSize: 12,
+              height: 16 / 12,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                ),
+                child: const Text(
+                  'Terms of Service',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 12,
+                    height: 16 / 12,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+              Text(
+                'and',
+                style: TextStyle(
+                  color: AppColors.primary.withOpacity(0.5),
+                  fontSize: 12,
+                  height: 16 / 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                ),
+                child: const Text(
+                  'Privacy Policy',
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontSize: 12,
+                    height: 16 / 12,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
       ],
     );
   }
