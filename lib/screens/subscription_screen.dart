@@ -5,13 +5,31 @@ import 'package:wstore/wstore.dart';
 
 class SubscriptionScreenStore extends WStore {
   static const _offerTimerId = 1;
-  Duration offerTime = const Duration(days: 1);
+  Duration _offerTime = const Duration(days: 1);
+
+  int get timerHours => computed(
+        getValue: () => _offerTime.inHours % Duration.hoursPerDay,
+        watch: () => [_offerTime],
+        keyName: 'timerHours',
+      );
+
+  int get timerMinutes => computed(
+        getValue: () => _offerTime.inMinutes % Duration.minutesPerHour,
+        watch: () => [_offerTime],
+        keyName: 'timerMinutes',
+      );
+
+  int get timerSeconds => computed(
+        getValue: () => _offerTime.inSeconds % Duration.secondsPerMinute,
+        watch: () => [_offerTime],
+        keyName: 'timerSeconds',
+      );
 
   void startOfferTimer() {
     setInterval(
       () {
-        if (offerTime.inSeconds > 0) {
-          setStore(() => offerTime -= const Duration(seconds: 1));
+        if (_offerTime.inSeconds > 0) {
+          setStore(() => _offerTime -= const Duration(seconds: 1));
         } else {
           killTimer(timerId: _offerTimerId);
         }
@@ -88,12 +106,7 @@ class SubscriptionScreenContent extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  WStoreValueBuilder<SubscriptionScreenStore, Duration>(
-                    watch: (store) => store.offerTime,
-                    builder: (context, value) {
-                      return SubscriptionTimer(value: value);
-                    },
-                  ),
+                  const SubscriptionTimer(),
                 ],
               ),
             ),
@@ -105,22 +118,32 @@ class SubscriptionScreenContent extends StatelessWidget {
 }
 
 class SubscriptionTimer extends StatelessWidget {
-  final Duration value;
-
-  const SubscriptionTimer({
-    super.key,
-    required this.value,
-  });
+  const SubscriptionTimer({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TimerValue(value: value.inHours % Duration.hoursPerDay),
+        WStoreValueBuilder<SubscriptionScreenStore, int>(
+          watch: (store) => store.timerHours,
+          builder: (context, hours) {
+            return TimerValue(value: hours);
+          },
+        ),
         const TimerSemiColumn(),
-        TimerValue(value: value.inMinutes % Duration.minutesPerHour),
+        WStoreValueBuilder<SubscriptionScreenStore, int>(
+          watch: (store) => store.timerMinutes,
+          builder: (context, minutes) {
+            return TimerValue(value: minutes);
+          },
+        ),
         const TimerSemiColumn(),
-        TimerValue(value: value.inSeconds % Duration.secondsPerMinute),
+        WStoreValueBuilder<SubscriptionScreenStore, int>(
+          watch: (store) => store.timerSeconds,
+          builder: (context, seconds) {
+            return TimerValue(value: seconds);
+          },
+        ),
       ],
     );
   }
@@ -148,7 +171,8 @@ class TimerValue extends StatelessWidget {
         color: AppColors.primary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
       ),
-      alignment: Alignment.center,
+      alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(left: 11),
       child: Text(
         _twoDigits(value),
         style: const TextStyle(
