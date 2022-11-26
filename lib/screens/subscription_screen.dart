@@ -112,7 +112,86 @@ class SubscriptionScreenContent extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 8),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: UnlockFeatures(),
+        ),
       ],
+    );
+  }
+}
+
+class UnlockFeatures extends StatelessWidget {
+  const UnlockFeatures({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      width: double.infinity,
+      child: Column(
+        children: const [
+          SizedBox(
+            height: 50,
+            child: Center(
+              child: Text(
+                'Unlock Monumental Habits',
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 20,
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
+          ),
+          Divider(height: 1, color: AppColors.bg),
+          UnlockCheckFeature(text: 'Unlimited habits'),
+          Divider(height: 1, color: AppColors.bg),
+          UnlockCheckFeature(text: 'Access to all courses'),
+          Divider(height: 1, color: AppColors.bg),
+          UnlockCheckFeature(text: 'Access to all avatar illustrations'),
+        ],
+      ),
+    );
+  }
+}
+
+class UnlockCheckFeature extends StatelessWidget {
+  final String text;
+
+  const UnlockCheckFeature({
+    super.key,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 46,
+      child: Row(
+        children: [
+          const SizedBox(width: 20),
+          Image.asset(
+            'assets/images/check-boll.png',
+            width: 22,
+            height: 22,
+          ),
+          const SizedBox(width: 20),
+          Text(
+            text,
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 16,
+              color: AppColors.primary,
+            ),
+          ),
+          const SizedBox(width: 20),
+        ],
+      ),
     );
   }
 }
