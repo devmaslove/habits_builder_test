@@ -5,7 +5,7 @@ import 'package:wstore/wstore.dart';
 
 class SubscriptionScreenStore extends WStore {
   static const _offerTimerId = 1;
-  Duration _offerTime = const Duration(days: 1);
+  Duration _offerTime = const Duration(hours: 23, minutes: 59, seconds: 59);
 
   int get timerHours => computed(
         getValue: () => _offerTime.inHours % Duration.hoursPerDay,
