@@ -27,7 +27,7 @@ class PrimaryActionButton extends StatelessWidget {
         shape: const CircleBorder(),
         color: AppColors.secondary2,
         clipBehavior: Clip.antiAlias,
-        elevation: 40.0,
+        elevation: 16.0,
         child: IconButton(
           padding: const EdgeInsets.all(16),
           onPressed: onPressed,
