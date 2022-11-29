@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:habits_builder_test/resources/app_colors.dart';
 import 'package:habits_builder_test/widgets/primary_action_button.dart';
 import 'package:habits_builder_test/widgets/primary_app_bar.dart';
 import 'package:wstore/wstore.dart';
@@ -26,7 +27,10 @@ class NewHabitScreen extends WStoreWidget<NewHabitScreenStore> {
         showBack: true,
       ),
       body: const SafeArea(
-        child: NewHabitScreenContent(),
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: NewHabitScreenContent(),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: PrimaryActionButton(
@@ -42,8 +46,8 @@ class NewHabitScreen extends WStoreWidget<NewHabitScreenStore> {
         child: SizedBox(
           height: 80,
           child: Row(
-            children: [
-              Text('Hello'),
+            children: const [
+              Text(''),
             ],
           ),
         ),
@@ -100,6 +104,73 @@ class NewHabitScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const SizedBox(width: 20),
+            Expanded(
+              child: TextFormField(
+                textCapitalization: TextCapitalization.sentences,
+                keyboardType: TextInputType.text,
+                style: const TextStyle(
+                  fontSize: 16,
+                  height: 24 / 16,
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    gapPadding: 0,
+                    borderSide: BorderSide.none,
+                  ),
+                  hintStyle: TextStyle(
+                    fontSize: 16,
+                    height: 24 / 16,
+                    color: AppColors.primary.withOpacity(0.5),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  hintText: 'Enter habit name',
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            DecoratedBox(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/circle-plus.png'),
+                  alignment: Alignment.topRight,
+                  fit: BoxFit.none,
+                ),
+              ),
+              position: DecorationPosition.foreground,
+              child: Container(
+                height: 48,
+                width: 48,
+                margin: const EdgeInsets.only(top: 4, right: 4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 1, top: 1),
+                  child: Image.asset('assets/images/book.png'),
+                ),
+              ),
+            ),
+            const SizedBox(width: 16),
+          ],
+        ),
+        Container(),
+      ],
+    );
   }
 }
