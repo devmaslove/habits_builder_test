@@ -23,7 +23,7 @@ class NewHabitScreen extends WStoreWidget<NewHabitScreenStore> {
   Widget build(BuildContext context, NewHabitScreenStore store) {
     return Scaffold(
       appBar: const PrimaryAppBar(
-        title: 'New Habbit',
+        title: 'New Habit',
         showBack: true,
       ),
       body: const SafeArea(
@@ -169,8 +169,180 @@ class NewHabitScreenContent extends StatelessWidget {
             const SizedBox(width: 16),
           ],
         ),
-        Container(),
+        const SizedBox(height: 8),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: HabitFrequency(),
+        ),
       ],
     );
+  }
+}
+
+class HabitFrequency extends StatelessWidget {
+  const HabitFrequency({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          Material(
+            color: Colors.white,
+            child: InkWell(
+              onTap: () {},
+              child: Ink(
+                height: 48,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 20),
+                    const Expanded(
+                      child: Text(
+                        'Habit Frequency',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    const Text(
+                      'Custom',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.secondary3,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Image.asset('assets/images/right.png'),
+                    const SizedBox(width: 4),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          const Divider(height: 1, color: AppColors.bg),
+          SizedBox(
+            height: 84,
+            child: Row(
+              children: const [
+                WeekDayFrequency(day: 'Sun', half: false),
+                VerticalDivider(),
+                WeekDayFrequency(day: 'Mon', half: true),
+                VerticalDivider(),
+                WeekDayFrequency(day: 'Tue', half: true),
+                VerticalDivider(),
+                WeekDayFrequency(day: 'Wed', half: false),
+                VerticalDivider(),
+                WeekDayFrequency(day: 'Thu', half: true),
+                VerticalDivider(),
+                WeekDayFrequency(day: 'Fri', half: false),
+                VerticalDivider(),
+                WeekDayFrequency(day: 'Sat', half: false),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class VerticalDivider extends StatelessWidget {
+  const VerticalDivider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: 1,
+      height: double.infinity,
+      child: ColoredBox(
+        color: AppColors.bg,
+      ),
+    );
+  }
+}
+
+class WeekDayFrequency extends StatelessWidget {
+  final String day;
+  final bool half;
+
+  const WeekDayFrequency({
+    super.key,
+    required this.day,
+    required this.half,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: [
+          const SizedBox(height: 10),
+          Text(
+            day.toUpperCase(),
+            style: TextStyle(
+              fontSize: 10,
+              height: 13 / 10,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primary.withOpacity(0.5),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: 38,
+            width: 38,
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: AppColors.secondary2.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: half
+                ? ClipPath(
+                    clipper: CustomHalfCircleClipper(),
+                    child: const ColoredBox(color: AppColors.secondary2),
+                  )
+                : DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary2,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomHalfCircleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final Path path = Path();
+    path.moveTo(0, 8);
+    path.quadraticBezierTo(2, 2, 8, 10);
+    path.lineTo(size.width - 10, size.height - 8);
+    path.quadraticBezierTo(
+      size.width - 2,
+      size.height - 2,
+      size.width - 8,
+      size.height,
+    );
+    path.lineTo(12, size.height);
+    path.quadraticBezierTo(0, size.height, 0, size.height - 12);
+    path.lineTo(0, 8);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
   }
 }
