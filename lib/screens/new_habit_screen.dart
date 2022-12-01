@@ -174,6 +174,88 @@ class NewHabitScreenContent extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 20),
           child: HabitFrequency(),
         ),
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Material(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () {},
+              child: Ink(
+                height: 48,
+                child: Row(
+                  children: [
+                    const SizedBox(width: 20),
+                    const Expanded(
+                      child: Text(
+                        'Reminder',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    const Text(
+                      '10:00AM',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.secondary3,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Image.asset('assets/images/right.png'),
+                    const SizedBox(width: 4),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Material(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () {},
+              child: Ink(
+                height: 48,
+                child: Row(
+                  children: const [
+                    SizedBox(width: 20),
+                    Expanded(
+                      child: Text(
+                        'Notification',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                    Text(
+                      'Off',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                    SizedBox(width: 20),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
