@@ -8,6 +8,12 @@ class NewHabitScreenStore extends WStore {
   @override
   NewHabitScreen get widget => super.widget as NewHabitScreen;
 
+  bool checkNotification = false;
+
+  void switchNotification() {
+    setStore(() => checkNotification = !checkNotification);
+  }
+
   static NewHabitScreenStore of(BuildContext context) {
     return WStoreWidget.store<NewHabitScreenStore>(context);
   }
@@ -224,13 +230,15 @@ class NewHabitScreenContent extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             clipBehavior: Clip.antiAlias,
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                context.wstore<NewHabitScreenStore>().switchNotification();
+              },
               child: Ink(
                 height: 48,
                 child: Row(
-                  children: const [
-                    SizedBox(width: 20),
-                    Expanded(
+                  children: [
+                    const SizedBox(width: 20),
+                    const Expanded(
                       child: Text(
                         'Notification',
                         style: TextStyle(
@@ -240,16 +248,14 @@ class NewHabitScreenContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 20),
-                    Text(
-                      'Off',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.primary,
-                      ),
+                    const SizedBox(width: 20),
+                    WStoreValueBuilder<NewHabitScreenStore, bool>(
+                      watch: (store) => store.checkNotification,
+                      builder: (context, check) {
+                        return OnOffSwitcher(check: check);
+                      },
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                   ],
                 ),
               ),
@@ -258,6 +264,78 @@ class NewHabitScreenContent extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class OnOffSwitcher extends StatelessWidget {
+  final bool check;
+  final _animationDuration = const Duration(milliseconds: 150);
+
+  const OnOffSwitcher({
+    super.key,
+    required this.check,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 54,
+      height: 30,
+      decoration: BoxDecoration(
+        color: _getBackColor(check),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Stack(
+        children: [
+          AnimatedPositioned(
+            left: check ? 28 : 4,
+            top: 4,
+            duration: _animationDuration,
+            child: Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                color: _getMainColor(check),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: _getMainColor(check).withOpacity(0.5),
+                    blurRadius: 6,
+                    offset: Offset(check ? 2 : -2, 3),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+            left: check ? 8 : 32,
+            top: 7,
+            child: Text(
+              _getText(check),
+              style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: _getMainColor(check),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getBackColor(bool check) {
+    if (check) return AppColors.secondary3.withOpacity(0.2);
+    return AppColors.primary.withOpacity(0.1);
+  }
+
+  Color _getMainColor(bool check) {
+    if (check) return AppColors.secondary3;
+    return AppColors.primary;
+  }
+
+  String _getText(bool check) {
+    return check ? 'On' : 'Off';
   }
 }
 
