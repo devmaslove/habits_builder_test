@@ -9,6 +9,11 @@ class NewHabitScreenStore extends WStore {
   NewHabitScreen get widget => super.widget as NewHabitScreen;
 
   bool checkNotification = false;
+  bool showActions = false;
+
+  void switchActions() {
+    setStore(() => showActions = !showActions);
+  }
 
   void switchNotification() {
     setStore(() => checkNotification = !checkNotification);
@@ -27,23 +32,111 @@ class NewHabitScreen extends WStoreWidget<NewHabitScreenStore> {
 
   @override
   Widget build(BuildContext context, NewHabitScreenStore store) {
+    final bottom = MediaQuery.of(context).viewInsets.bottom > 0 ? 0.0 : -44.0;
+    final centerY = MediaQuery.of(context).size.width / 2;
+
     return Scaffold(
       appBar: const PrimaryAppBar(
         title: 'New Habit',
         showBack: true,
       ),
-      body: const SafeArea(
-        child: SingleChildScrollView(
-          physics: ClampingScrollPhysics(),
-          child: NewHabitScreenContent(),
+      body: SafeArea(
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            const SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
+              child: NewHabitScreenContent(),
+            ),
+            WStoreValueBuilder<NewHabitScreenStore, bool>(
+              store: store,
+              watch: (store) => store.showActions,
+              builder: (BuildContext context, show) {
+                return AnimatedPositioned(
+                  bottom: show ? 96 + bottom : bottom,
+                  left: show ? 64 : centerY,
+                  duration: const Duration(milliseconds: 150),
+                  child: IgnorePointer(
+                    ignoring: !show,
+                    child: AnimatedOpacity(
+                      opacity: show ? 1 : 0,
+                      duration: const Duration(milliseconds: 150),
+                      child: AnimatedRotation(
+                        turns: show ? 0 : 0.25,
+                        duration: const Duration(milliseconds: 250),
+                        child: PrimaryActionButton(
+                          onPressed: () {
+                            context.wstore<NewHabitScreenStore>().switchActions();
+                          },
+                          icon: const Icon(
+                            Icons.add,
+                            size: 20,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            WStoreValueBuilder<NewHabitScreenStore, bool>(
+              store: store,
+              watch: (store) => store.showActions,
+              builder: (BuildContext context, show) {
+                return AnimatedPositioned(
+                  bottom: show ? 96 + bottom : bottom,
+                  right: show ? 64 : centerY,
+                  duration: const Duration(milliseconds: 150),
+                  child: IgnorePointer(
+                    ignoring: !show,
+                    child: AnimatedOpacity(
+                      opacity: show ? 1 : 0,
+                      duration: const Duration(milliseconds: 150),
+                      child: AnimatedRotation(
+                        turns: show ? 0 : -0.25,
+                        duration: const Duration(milliseconds: 250),
+                        child: PrimaryActionButton(
+                          onPressed: () {
+                            context.wstore<NewHabitScreenStore>().switchActions();
+                          },
+                          backColor: AppColors.primary,
+                          icon: const Icon(
+                            Icons.add,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: PrimaryActionButton(
-        icon: Image.asset(
-          'assets/images/check.png',
-        ),
-        onPressed: () {},
+      floatingActionButton: WStoreValueBuilder<NewHabitScreenStore, bool>(
+        store: store,
+        watch: (store) => store.showActions,
+        builder: (BuildContext context, show) {
+          return PrimaryActionButton(
+            backColor: show ? Colors.white : AppColors.secondary2,
+            icon: show
+                ? const Icon(
+                    Icons.close,
+                    size: 20,
+                    color: AppColors.primary,
+                  )
+                : Image.asset(
+                    'assets/images/check.png',
+                  ),
+            onPressed: () {
+              store.switchActions();
+            },
+          );
+        },
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.white,

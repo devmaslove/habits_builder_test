@@ -6,10 +6,12 @@ class PrimaryActionButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.icon,
+    this.backColor = AppColors.secondary2,
   });
 
   final VoidCallback onPressed;
   final Widget icon;
+  final Color backColor;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +20,14 @@ class PrimaryActionButton extends StatelessWidget {
         shape: BoxShape.circle,
         border: Border.all(
           width: 6,
-          color: AppColors.secondary2.withOpacity(0.2),
+          color: backColor.withOpacity(0.2),
           strokeAlign: StrokeAlign.outside,
         ),
       ),
       margin: const EdgeInsets.only(bottom: 16),
       child: Material(
         shape: const CircleBorder(),
-        color: AppColors.secondary2,
+        color: backColor,
         clipBehavior: Clip.antiAlias,
         elevation: 16.0,
         child: IconButton(
